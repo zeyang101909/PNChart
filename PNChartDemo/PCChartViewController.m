@@ -203,20 +203,23 @@
         self.centerSwitch.hidden = NO;
         self.centerSwitchLabel.hidden = NO;
 
+        PNPieChartDataItem *item1 =  [PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen description:@"fehi"];
+        PNPieChartDataItem *item2 =  [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"WWDC"];
+        PNPieChartDataItem *item3 =  [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"GOOG I/O"];
 
-        NSArray *items = @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],
-                [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"WWDC"],
-                [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"GOOG I/O"],
-        ];
+        NSArray *items = @[item1,item2,item3];
 
-        self.pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake((CGFloat) (SCREEN_WIDTH / 2.0 - 100), 135, 200.0, 200.0) items:items];
+        self.pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake((CGFloat) (SCREEN_WIDTH / 2.0 - 100), 135, 200.0, 200.0) ];
         self.pieChart.descriptionTextColor = [UIColor whiteColor];
         self.pieChart.descriptionTextFont = [UIFont fontWithName:@"Avenir-Medium" size:11.0];
         self.pieChart.descriptionTextShadowColor = [UIColor clearColor];
         self.pieChart.showAbsoluteValues = NO;
         self.pieChart.showOnlyValues = NO;
         [self.pieChart strokeChart];
-
+        self.pieChart.delegate = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.pieChart.items = items;
+        });
 
         self.pieChart.legendStyle = PNLegendItemStyleStacked;
         self.pieChart.legendFont = [UIFont boldSystemFontOfSize:12.0f];
@@ -478,6 +481,10 @@
         self.radarChart.displayAnimated = sender.on;
         [self.radarChart strokeChart];
     }
+}
+-(void)userClickedOnPieIndexItem:(NSInteger)pieIndex{
+
+    NSLog(@"%ld",pieIndex);
 }
 
 @end

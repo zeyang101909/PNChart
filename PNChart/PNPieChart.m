@@ -12,7 +12,7 @@
 
 @interface PNPieChart()<CAAnimationDelegate>
 
-@property (nonatomic) NSArray *items;
+//@property (nonatomic,strong) NSArray *items;
 @property (nonatomic) NSArray *endPercentages;
 
 @property (nonatomic) UIView         *contentView;
@@ -52,7 +52,20 @@
     
     return self;
 }
+-(id)initWithFrame:(CGRect)frame{
 
+    self = [super initWithFrame:frame];
+    if (self) {
+
+        [self baseInit];
+    }
+    return self;
+}
+-(void)setItems:(NSArray *)items{
+
+    _items = items;
+    [self baseInit];
+}
 - (void)awakeFromNib{
     [super awakeFromNib];
     [self baseInit];
@@ -69,7 +82,7 @@
 //    _outerCircleRadius  = CGRectGetWidth(self.bounds) / 2;
 //    _innerCircleRadius  = CGRectGetWidth(self.bounds) / 6;
     _descriptionTextColor = [UIColor whiteColor];
-    _descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
     _descriptionTextShadowColor  = [[UIColor blackColor] colorWithAlphaComponent:0.4];
     _descriptionTextShadowOffset =  CGSizeMake(0, 1);
     _duration = 1.0;
@@ -82,6 +95,23 @@
 }
 
 - (void)loadDefault{
+
+    if ([self.items count]==0) {
+
+        [_contentView removeFromSuperview];
+        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:_contentView];
+
+
+        UILabel *intruduceLable = [[UILabel alloc]initWithFrame:_contentView.bounds];
+        intruduceLable.textColor = [UIColor lightGrayColor];
+        intruduceLable.textAlignment = NSTextAlignmentCenter;
+        intruduceLable.font = [UIFont systemFontOfSize:14];
+        intruduceLable.text = @"暂无数据";
+        [_contentView addSubview:intruduceLable];
+
+        return;
+    }
     __block CGFloat currentTotal = 0;
     CGFloat total = [[self.items valueForKeyPath:@"@sum.value"] floatValue];
     NSMutableArray *endPercentages = [NSMutableArray new];

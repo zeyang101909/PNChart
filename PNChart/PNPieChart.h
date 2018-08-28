@@ -18,8 +18,9 @@
 #endif
 
 - (id)initWithFrame:(CGRect)frame items:(NSArray *)items;
+- (id)initWithFrame:(CGRect)frame;
 
-@property (nonatomic, readonly) NSArray	*items;
+@property (nonatomic) NSArray	*items;
 
 /** Default is 18-point Avenir Medium. */
 @property (nonatomic) UIFont  *descriptionTextFont;
